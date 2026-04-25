@@ -88,11 +88,13 @@
                     <span class="card__play">▶</span>
                 </div>
             </div>
-            <!-- Card 2 — placeholder -->
-            <div class="card card--empty">
-                <div class="card__placeholder">
-                    <span class="card__lock">🔒</span>
-                    <span class="card__soon">Soon</span>
+            <!-- Card 2 — Video (scrubbing) -->
+            <div class="card card--video" id="card-video-2">
+                <video class="card__media" muted playsinline preload="auto">
+                    <source src="Robot_scanning,_target_202604250336.mp4" type="video/mp4">
+                </video>
+                <div class="card__overlay">
+                    <span class="card__play">▶</span>
                 </div>
             </div>
             <!-- Card 3 — placeholder -->
@@ -118,6 +120,9 @@
         <canvas class="scrub-overlay__canvas" id="scrub-canvas"></canvas>
         <video class="scrub-overlay__video-src" id="scrub-video" muted playsinline preload="auto" style="display:none;">
             <source src="Image to video 丨 A cinematic 6-second video of a futuristic robot being assemble.mp4" type="video/mp4">
+        </video>
+        <video class="scrub-overlay__video-src" id="scrub-video-2" muted playsinline preload="auto" style="display:none;">
+            <source src="Robot_scanning,_target_202604250336.mp4" type="video/mp4">
         </video>
         <div class="scrub-overlay__bottom">
             <div class="scrub-slider" id="scrub-slider">

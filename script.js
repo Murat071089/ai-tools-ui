@@ -163,74 +163,84 @@ function initSlider() {
 
 /* === Card Video — open fullscreen overlay === */
 function initCardVideo() {
-    const card = document.getElementById('card-video');
     const overlay = document.getElementById('scrub-overlay');
-    const video = document.getElementById('scrub-video');
-    const canvas = document.getElementById('scrub-canvas');
-    const closeBtn = document.getElementById('scrub-close');
-    if (!card || !overlay || !video || !canvas) return;
+    const canvas  = document.getElementById('scrub-canvas');
+    const closeBtn= document.getElementById('scrub-close');
+    if (!overlay || !canvas) return;
 
     const ctx = canvas.getContext('2d');
 
-    function drawFrame() {
-        canvas.width = video.videoWidth || 1080;
-        canvas.height = video.videoHeight || 1920;
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    function makeCardHandler(video) {
+        function drawFrame() {
+            canvas.width  = video.videoWidth  || 1080;
+            canvas.height = video.videoHeight || 1920;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        }
+
+        return function onCardClick() {
+            // Set active video for scrub slider
+            window._scrubVideo     = video;
+            window._scrubDrawFrame = drawFrame;
+
+            overlay.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+
+            // EXACT original working logic
+            video.currentTime = 0;
+            const p = video.play();
+            if (p) {
+                p.then(() => {
+                    video.pause();
+                    video.currentTime = 0;
+                    video.addEventListener('seeked', function onFirstSeek() {
+                        video.removeEventListener('seeked', onFirstSeek);
+                        drawFrame();
+                    });
+                }).catch(() => {
+                    video.load();
+                    video.addEventListener('loadeddata', function onLoad() {
+                        video.removeEventListener('loadeddata', onLoad);
+                        video.currentTime = 0;
+                        drawFrame();
+                    });
+                });
+            }
+        };
     }
 
-    card.addEventListener('click', () => {
-        overlay.classList.add('is-open');
-        document.body.style.overflow = 'hidden';
+    // Card 1 — original
+    const card1  = document.getElementById('card-video');
+    const video1 = document.getElementById('scrub-video');
+    if (card1 && video1) card1.addEventListener('click', makeCardHandler(video1));
 
-        // Prime video for mobile — play then pause, then draw first frame
-        video.currentTime = 0;
-        const p = video.play();
-        if (p) {
-            p.then(() => {
-                video.pause();
-                video.currentTime = 0;
-                // Wait for seek to complete, then draw
-                video.addEventListener('seeked', function onFirstSeek() {
-                    video.removeEventListener('seeked', onFirstSeek);
-                    drawFrame();
-                });
-            }).catch(() => {
-                video.load();
-                video.addEventListener('loadeddata', function onLoad() {
-                    video.removeEventListener('loadeddata', onLoad);
-                    video.currentTime = 0;
-                    drawFrame();
-                });
-            });
-        }
-    });
+    // Card 2 — same logic, different elements
+    const card2  = document.getElementById('card-video-2');
+    const video2 = document.getElementById('scrub-video-2');
+    if (card2 && video2) card2.addEventListener('click', makeCardHandler(video2));
 
     closeBtn.addEventListener('click', () => {
         overlay.classList.remove('is-open');
         document.body.style.overflow = '';
-        video.pause();
-        video.currentTime = 0;
+        const vid = window._scrubVideo;
+        if (vid) { vid.pause(); vid.currentTime = 0; }
         // Reset scrub slider
-        const thumb = document.getElementById('scrub-thumb');
+        const thumb    = document.getElementById('scrub-thumb');
         const progress = document.getElementById('scrub-progress');
-        const text = overlay.querySelector('.scrub-slider__text');
-        if (thumb) { thumb.style.left = '5px'; thumb.style.transition = 'left 0.3s'; }
+        const text     = overlay.querySelector('.scrub-slider__text');
+        if (thumb)    { thumb.style.left = '5px'; thumb.style.transition = 'left 0.3s'; }
         if (progress) { progress.style.width = '0%'; }
-        if (text) { text.style.opacity = '0.45'; }
+        if (text)     { text.style.opacity = '0.45'; }
     });
-
-    // Store drawFrame globally so scrub slider can use it
-    window._scrubDrawFrame = drawFrame;
 }
+
 
 /* === Scrub Slider — drag to control video time via Canvas === */
 function initScrubSlider() {
     const overlay = document.getElementById('scrub-overlay');
     const slider = document.getElementById('scrub-slider');
     const thumb = document.getElementById('scrub-thumb');
-    const video = document.getElementById('scrub-video');
     const progressBar = document.getElementById('scrub-progress');
-    if (!slider || !thumb || !video || !overlay) return;
+    if (!slider || !thumb || !overlay) return;
 
     thumb.style.touchAction = 'none';
     slider.style.touchAction = 'none';
@@ -245,11 +255,14 @@ function initScrubSlider() {
         return slider.offsetWidth - thumb.offsetWidth - 7;
     }
 
-    // Listen for seeked event to draw frame on canvas
-    video.addEventListener('seeked', () => {
+    // Listen for seeked on either video — draw frame on canvas
+    function onSeeked() {
         pendingSeek = false;
         if (window._scrubDrawFrame) window._scrubDrawFrame();
-    });
+    }
+    document.getElementById('scrub-video').addEventListener('seeked', onSeeked);
+    const v2 = document.getElementById('scrub-video-2');
+    if (v2) v2.addEventListener('seeked', onSeeked);
 
     function scrubStart(clientX) {
         scrubDragging = true;
@@ -270,7 +283,8 @@ function initScrubSlider() {
         const progress = x / maxLeft;
 
         // Seek video — only if not already seeking
-        if (!pendingSeek && video.readyState >= 1 && video.duration && isFinite(video.duration)) {
+        const video = window._scrubVideo;
+        if (!pendingSeek && video && video.readyState >= 1 && video.duration && isFinite(video.duration)) {
             pendingSeek = true;
             video.currentTime = Math.min(progress * video.duration, video.duration - 0.05);
         }
@@ -295,7 +309,8 @@ function initScrubSlider() {
             progressBar.style.transition = 'width 0.4s';
             progressBar.style.width = '0%';
         }
-        if (video.readyState >= 1) video.currentTime = 0;
+        const video = window._scrubVideo;
+        if (video && video.readyState >= 1) video.currentTime = 0;
         const text = slider.querySelector('.scrub-slider__text');
         if (text) {
             text.style.transition = 'opacity 0.4s';
