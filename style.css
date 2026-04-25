@@ -786,6 +786,7 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    min-height: 0;
 }
 
 .s2-right {
@@ -793,11 +794,13 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    min-height: 0;
 }
 
 .s2-info {
     flex: 1;
-    padding: 14px 12px;
+    min-height: 0;
+    padding: 10px 10px;
     border-radius: 16px;
     background: rgba(10, 10, 15, 0.7); /* significantly darker for readable text */
     backdrop-filter: blur(16px);
@@ -805,7 +808,7 @@ html, body {
     border: 1px solid rgba(255,255,255,0.06);
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 3px;
     transition: transform 0.3s, border-color 0.3s;
     box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 }
@@ -818,7 +821,7 @@ html, body {
 .s2-badge {
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: 1.15rem;
+    font-size: 1rem;
     font-weight: 600;
     letter-spacing: 0.02em;
     padding: 0;
@@ -834,7 +837,7 @@ html, body {
 
 .s2-name { 
     font-family: 'Inter', sans-serif; 
-    font-size: 1.45rem; 
+    font-size: 1.3rem; 
     font-weight: 800; 
     color: #ffffff; 
     line-height: 1.1; 
@@ -843,17 +846,17 @@ html, body {
 
 .s2-desc { 
     font-family: 'Inter', sans-serif; 
-    font-size: 0.75rem; 
+    font-size: 0.7rem; 
     color: rgba(255,255,255,0.75); 
-    line-height: 1.4; 
-    margin-top: 3px; 
+    line-height: 1.25; 
+    margin-top: 2px; 
 }
 
 .s2-price { 
     font-family: 'Inter', sans-serif; 
-    font-size: 0.75rem; 
+    font-size: 0.7rem; 
     color: rgba(255,255,255,0.85); 
-    padding: 6px 14px;
+    padding: 5px 12px;
     border-radius: 20px;
     display: inline-flex;
     align-items: baseline;
@@ -891,42 +894,49 @@ html, body {
 
 .s2-access-btn {
     font-family: 'Inter', sans-serif;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 600;
-    padding: 7px 12px;
+    padding: 6px 10px;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
     cursor: pointer;
     backdrop-filter: blur(8px);
     transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.15);
     white-space: nowrap;
     position: relative;
     overflow: hidden;
     margin-top: auto;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
+    border: 1px solid;
 }
 
 .s2-access-btn:active { transform: scale(0.95); }
 
-.s2-access-btn--gpt:hover { background: rgba(94, 234, 212, 0.15); border-color: rgba(94, 234, 212, 0.4); box-shadow: 0 0 12px rgba(94, 234, 212, 0.2); }
-.s2-access-btn--claude:hover { background: rgba(253, 224, 71, 0.15); border-color: rgba(253, 224, 71, 0.4); box-shadow: 0 0 12px rgba(253, 224, 71, 0.2); }
-.s2-access-btn--gemini:hover { background: rgba(147, 197, 253, 0.15); border-color: rgba(147, 197, 253, 0.4); box-shadow: 0 0 12px rgba(147, 197, 253, 0.2); }
+/* Vibrant Default States */
+.s2-access-btn--gpt { background: rgba(94, 234, 212, 0.12); border-color: rgba(94, 234, 212, 0.35); color: #5eead4; box-shadow: 0 0 10px rgba(94, 234, 212, 0.1); }
+.s2-access-btn--claude { background: rgba(253, 224, 71, 0.12); border-color: rgba(253, 224, 71, 0.35); color: #fde047; box-shadow: 0 0 10px rgba(253, 224, 71, 0.1); }
+.s2-access-btn--gemini { background: rgba(147, 197, 253, 0.12); border-color: rgba(147, 197, 253, 0.35); color: #93c5fd; box-shadow: 0 0 10px rgba(147, 197, 253, 0.1); }
 
+/* Hover States */
+.s2-access-btn--gpt:hover { background: rgba(94, 234, 212, 0.25); border-color: rgba(94, 234, 212, 0.6); box-shadow: 0 0 16px rgba(94, 234, 212, 0.25); }
+.s2-access-btn--claude:hover { background: rgba(253, 224, 71, 0.25); border-color: rgba(253, 224, 71, 0.6); box-shadow: 0 0 16px rgba(253, 224, 71, 0.25); }
+.s2-access-btn--gemini:hover { background: rgba(147, 197, 253, 0.25); border-color: rgba(147, 197, 253, 0.6); box-shadow: 0 0 16px rgba(147, 197, 253, 0.25); }
+
+/* Syncing State - Mega Glow */
 .s2-access-btn.is-syncing {
     pointer-events: none;
-    background: rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.95);
-    border-color: rgba(255,255,255,0.4);
+    color: #ffffff;
 }
+
+.s2-access-btn--gpt.is-syncing { background: rgba(94, 234, 212, 0.45); border-color: #5eead4; box-shadow: 0 0 20px rgba(94, 234, 212, 0.6), inset 0 0 10px rgba(94, 234, 212, 0.3); }
+.s2-access-btn--claude.is-syncing { background: rgba(253, 224, 71, 0.45); border-color: #fde047; box-shadow: 0 0 20px rgba(253, 224, 71, 0.6), inset 0 0 10px rgba(253, 224, 71, 0.3); }
+.s2-access-btn--gemini.is-syncing { background: rgba(147, 197, 253, 0.45); border-color: #93c5fd; box-shadow: 0 0 20px rgba(147, 197, 253, 0.6), inset 0 0 10px rgba(147, 197, 253, 0.3); }
 
 .s2-access-btn.is-syncing::before {
     content: '';
     position: absolute;
     top: 0; left: -100%; width: 50%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
-    animation: btn-glare 1.2s infinite;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+    animation: btn-glare 1s infinite;
 }
 
 @keyframes btn-glare {
