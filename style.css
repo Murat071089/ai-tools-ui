@@ -132,13 +132,12 @@ body {
     background: var(--bg);
     color: var(--text-white);
     overflow-x: hidden;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
     -webkit-font-smoothing: antialiased;
 }
 
-html {
-    scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
-}
 
 html, body {
     height: 100%;
