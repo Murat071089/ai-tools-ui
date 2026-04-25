@@ -1,10 +1,75 @@
 document.addEventListener('DOMContentLoaded', () => {
+    initHistoryRouting();
     initSplash();
     initMobileFullscreen();
     initSlider();
     initCards();
     initCheckoutFlow();
+    initSectionObserver();
 });
+
+let currentStep = 0;
+
+function initHistoryRouting() {
+    window.history.replaceState({ step: 0 }, '', '');
+
+    window.addEventListener('popstate', (e) => {
+        const step = e.state ? (e.state.step || 0) : 0;
+        currentStep = step;
+        
+        if (step === 0) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (step === 1) {
+            const s2 = document.getElementById('section-2');
+            if (s2) s2.scrollIntoView({ behavior: 'smooth' });
+        } else if (step === 2) {
+            const s3 = document.getElementById('section-3');
+            if (s3) s3.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+}
+
+let hasLoadedCinematicOnce = false;
+
+function triggerCinematicLoading() {
+    const loader = document.getElementById('s2-loader');
+    const s2Grid = document.getElementById('s2-grid');
+    
+    if (!loader || !s2Grid) return;
+    if (s2Grid.classList.contains('content-ready') || loader.dataset.loading === "true") {
+        return; // Already ready or currently loading
+    }
+
+    loader.classList.remove('is-hidden');
+    loader.dataset.loading = "true";
+    s2Grid.classList.remove('content-ready');
+
+    const delay = hasLoadedCinematicOnce ? 1000 : 4500;
+    hasLoadedCinematicOnce = true;
+
+    setTimeout(() => {
+        if (loader) {
+            loader.classList.add('is-hidden');
+            loader.dataset.loading = "false";
+        }
+        if (s2Grid) s2Grid.classList.add('content-ready');
+    }, delay);
+}
+
+function initSectionObserver() {
+    const section2 = document.getElementById('section-2');
+    if (!section2) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                triggerCinematicLoading();
+            }
+        });
+    }, { threshold: 0.25 });
+
+    observer.observe(section2);
+}
 
 /* === Splash → Fullscreen on tap === */
 function initSplash() {
@@ -77,8 +142,6 @@ function initSlider() {
         return slider.offsetWidth - thumb.offsetWidth - 8;
     }
 
-    let hasLoadedCinematicOnce = false;
-
     function startDrag(clientX) {
         dragging = true;
         startX = clientX - currentX;
@@ -119,29 +182,12 @@ function initSlider() {
             setTimeout(() => {
                 const section2 = document.getElementById('section-2');
                 if (section2) {
-                    section2.scrollIntoView({ behavior: 'smooth' });
-                    
-                    const loader = document.getElementById('s2-loader');
-                    const s2Grid = document.getElementById('s2-grid');
-
-                    // Reset animation state
-                    if (loader) loader.classList.remove('is-hidden');
-                    if (s2Grid) s2Grid.classList.remove('content-ready');
-
-                    if (hasLoadedCinematicOnce) {
-                        // Fast load for returning users
-                        setTimeout(() => {
-                            if (loader) loader.classList.add('is-hidden');
-                            if (s2Grid) s2Grid.classList.add('content-ready');
-                        }, 1000);
-                    } else {
-                        // Cinematic Loading first time
-                        hasLoadedCinematicOnce = true;
-                        setTimeout(() => {
-                            if (loader) loader.classList.add('is-hidden');
-                            if (s2Grid) s2Grid.classList.add('content-ready');
-                        }, 4500);
+                    if (currentStep !== 1) {
+                        window.history.pushState({ step: 1 }, '', '');
+                        currentStep = 1;
                     }
+                    section2.scrollIntoView({ behavior: 'smooth' });
+                    triggerCinematicLoading();
 
                     // Quietly reset the slider so it's ready again if the user scrolls up
                     setTimeout(() => {
@@ -274,14 +320,18 @@ function initCheckoutFlow() {
                 
                 // After fade to black completes
                 setTimeout(() => {
-                    // TODO: Replace with the actual URL
-                    // window.location.href = "https://your-payment-gateway.com";
-                    
-                    // Resetting for testing purposes without real redirect
                     btn.innerHTML = 'Получить доступ';
                     btn.classList.remove('is-syncing');
                     document.body.classList.remove('go-to-checkout');
-                    alert("Переход на страницу оплаты!"); // Alert for preview demo purposes
+                    
+                    const section3 = document.getElementById('section-3');
+                    if (section3) {
+                        if (currentStep !== 2) {
+                            window.history.pushState({ step: 2 }, '', '');
+                            currentStep = 2;
+                        }
+                        section3.scrollIntoView({ behavior: 'smooth' });
+                    }
                 }, 800);
             }, 5500);
         });
