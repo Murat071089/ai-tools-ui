@@ -141,6 +141,20 @@ function initSlider() {
                             if (s2Grid) s2Grid.classList.add('content-ready');
                         }, 4500);
                     }
+
+                    // Quietly reset the slider so it's ready again if the user scrolls up
+                    setTimeout(() => {
+                        thumb.style.transition = 'none'; // reset without weird snap if already invisible, or smooth:
+                        thumb.style.transition = 'left 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                        thumb.style.left = minLeft + 'px';
+                        currentX = 0;
+                        slider.classList.remove('is-complete');
+                        const text = slider.querySelector('.slider-btn__text');
+                        if (text) {
+                            text.style.transition = 'opacity 0.5s';
+                            text.style.opacity = '0.5';
+                        }
+                    }, 800);
                 }
             }, 400);
         } else {
