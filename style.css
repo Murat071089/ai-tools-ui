@@ -161,6 +161,24 @@ html, body {
     background: var(--bg);
 }
 
+/* Переход снизу: затемнение от Hero к Section 2 */
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 22%;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(5, 5, 8, 0.55) 50%,
+        rgba(5, 5, 8, 0.92) 100%
+    );
+    pointer-events: none;
+    z-index: 10;
+}
+
 /* ═══════════════════════════
    FULLSCREEN VIDEO
    ═══════════════════════════ */
@@ -686,6 +704,24 @@ html, body {
     display: flex;
     align-items: stretch;
     box-sizing: border-box;
+}
+
+/* Переход снизу: от Section 2 к Section 3 */
+.section-2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 18%;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(4, 4, 10, 0.6) 55%,
+        rgba(4, 4, 10, 0.95) 100%
+    );
+    pointer-events: none;
+    z-index: 10;
 }
 
 .s2-bg {
