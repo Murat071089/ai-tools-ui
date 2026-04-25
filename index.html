@@ -79,23 +79,17 @@
     <!-- Second section — Cards Grid -->
     <section class="section-2" id="section-2">
         <div class="cards-grid">
-            <!-- Card 1 — Video (scrubbing) -->
+            <!-- Card 1 — Video -->
             <div class="card card--video" id="card-video">
-                <video class="card__media" muted playsinline preload="auto">
+                <video class="card__media" muted loop autoplay playsinline preload="auto">
                     <source src="Image to video 丨 A cinematic 6-second video of a futuristic robot being assemble.mp4" type="video/mp4">
                 </video>
-                <div class="card__overlay">
-                    <span class="card__play">▶</span>
-                </div>
             </div>
-            <!-- Card 2 — Video (scrubbing) -->
+            <!-- Card 2 — Video -->
             <div class="card card--video" id="card-video-2">
-                <video class="card__media" muted playsinline preload="auto">
-                    <source src="Robot_scanning,_target_202604250336.mp4" type="video/mp4">
+                <video class="card__media" muted loop autoplay playsinline preload="auto">
+                    <source src="КАРТОЧКА 2.mp4" type="video/mp4">
                 </video>
-                <div class="card__overlay">
-                    <span class="card__play">▶</span>
-                </div>
             </div>
             <!-- Card 3 — placeholder -->
             <div class="card card--empty">
@@ -114,26 +108,7 @@
         </div>
     </section>
 
-    <!-- Fullscreen Video Scrub Overlay -->
-    <div class="scrub-overlay" id="scrub-overlay">
-        <button class="scrub-overlay__close" id="scrub-close">✕</button>
-        <canvas class="scrub-overlay__canvas" id="scrub-canvas"></canvas>
-        <video class="scrub-overlay__video-src" id="scrub-video" muted playsinline preload="auto" style="display:none;">
-            <source src="Image to video 丨 A cinematic 6-second video of a futuristic robot being assemble.mp4" type="video/mp4">
-        </video>
-        <video class="scrub-overlay__video-src" id="scrub-video-2" muted playsinline preload="auto" style="display:none;">
-            <source src="Robot_scanning,_target_202604250336.mp4" type="video/mp4">
-        </video>
-        <div class="scrub-overlay__bottom">
-            <div class="scrub-slider" id="scrub-slider">
-                <div class="scrub-slider__thumb" id="scrub-thumb">
-                    <img src="УБЕРИ_КОРОНЫ._ТАКЖЕ_202604242210.jpeg" alt="AI" class="scrub-slider__img">
-                </div>
-                <span class="scrub-slider__text">Подключить</span>
-                <div class="scrub-slider__progress" id="scrub-progress"></div>
-            </div>
-        </div>
-    </div>
+
 
     <script src="script.js"></script>
 </body>
