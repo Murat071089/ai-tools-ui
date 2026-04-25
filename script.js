@@ -60,13 +60,30 @@ function triggerCinematicLoading() {
     }
 }
 
+let lastScrollY = 0;
+
 function initSectionObserver() {
     const section2 = document.getElementById('section-2');
     if (!section2) return;
 
+    // Track scroll direction
+    window.addEventListener('scroll', () => {
+        lastScrollY = window.scrollY;
+    }, { passive: true });
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
+            const s2Grid = document.getElementById('s2-grid');
+            
             if (entry.isIntersecting) {
+                // Detect if user came from above or below
+                const rect = entry.boundingClientRect;
+                const fromBelow = rect.top > 0; // section is below viewport → user scrolled down
+                
+                if (s2Grid) {
+                    s2Grid.classList.toggle('from-below', fromBelow);
+                }
+                
                 // Section came into view — trigger loading/reveal
                 triggerCinematicLoading();
             } else {
