@@ -56,7 +56,7 @@ function triggerCinematicLoading() {
         setTimeout(() => {
             loader.dataset.loading = "false";
             s2Grid.classList.add('content-ready');
-        }, 1500);
+        }, 1000);
     }
 }
 

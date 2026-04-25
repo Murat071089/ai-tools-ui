@@ -1035,51 +1035,31 @@ body.go-to-checkout .checkout-overlay {
     z-index: 1;
 }
 
-/* ─── Базовое скрытое состояние ─── */
+/* ─── Скрытое состояние ─── */
 .s2-info, .s2-card {
     opacity: 0;
 }
 
-/* ─── Скролл ВНИЗ: каждая строка вплывает сверху вниз ─── */
+/* ─── Премиальное появление сверху вниз ─── */
 .content-ready .s2-info,
 .content-ready .s2-card {
-    animation: row-reveal-down 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: luxury-reveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Строка 1 */
-.content-ready #info-1 { animation-delay: 0.1s; }
-.content-ready #card-1 { animation-delay: 0.2s; }
+/* Строка 1: описание чуть раньше карточки */
+.content-ready #info-1 { animation-delay: 0.05s; }
+.content-ready #card-1 { animation-delay: 0.18s; }
 
 /* Строка 2 */
-.content-ready #info-2 { animation-delay: 0.45s; }
+.content-ready #info-2 { animation-delay: 0.42s; }
 .content-ready #card-2 { animation-delay: 0.55s; }
 
 /* Строка 3 */
-.content-ready #info-3 { animation-delay: 0.8s; }
-.content-ready #card-3 { animation-delay: 0.9s; }
+.content-ready #info-3 { animation-delay: 0.78s; }
+.content-ready #card-3 { animation-delay: 0.91s; }
 
-@keyframes row-reveal-down {
-    from { opacity: 0; transform: translateY(28px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ─── Скролл ВВЕРХ: каждая строка вплывает снизу вверх ─── */
-.content-ready.from-below .s2-info,
-.content-ready.from-below .s2-card {
-    animation: row-reveal-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-/* Строка 1 сверху → анимируется последней при движении снизу вверх */
-.content-ready.from-below #info-3 { animation-delay: 0.1s; }
-.content-ready.from-below #card-3 { animation-delay: 0.2s; }
-
-.content-ready.from-below #info-2 { animation-delay: 0.45s; }
-.content-ready.from-below #card-2 { animation-delay: 0.55s; }
-
-.content-ready.from-below #info-1 { animation-delay: 0.8s; }
-.content-ready.from-below #card-1 { animation-delay: 0.9s; }
-
-@keyframes row-reveal-up {
-    from { opacity: 0; transform: translateY(-28px); }
-    to   { opacity: 1; transform: translateY(0); }
+@keyframes luxury-reveal {
+    0%   { opacity: 0; transform: translateY(22px) scale(0.97); filter: blur(6px); }
+    60%  { opacity: 1; filter: blur(0px); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
 }
