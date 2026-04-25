@@ -913,7 +913,7 @@ html, body {
     height: 100%; 
     object-fit: cover; 
     display: block; 
-    filter: brightness(0.85); /* Significantly brighter inactive state to reveal details */
+    filter: brightness(0.75); /* Tuned inactive state brightness */
     transition: filter 0.4s ease;
 }
 
