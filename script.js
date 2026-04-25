@@ -160,16 +160,16 @@ function initSlider() {
     document.addEventListener('mouseup', endDrag);
 }
 
-/* === Card ↔ Info highlight === */
+/* === Card ↔ Info highlight + mobile autoplay fix === */
 function initCards() {
     const cards = document.querySelectorAll('.s2-card');
     const infos = document.querySelectorAll('.s2-info');
     if (!cards.length) return;
 
+    // Highlight on tap
     cards.forEach(card => {
         card.addEventListener('click', () => {
             const row = card.getAttribute('data-row');
-            // Toggle active state
             cards.forEach(c => c.classList.remove('is-active'));
             infos.forEach(i => i.classList.remove('is-active'));
             card.classList.add('is-active');
@@ -177,4 +177,15 @@ function initCards() {
             if (info) info.classList.add('is-active');
         });
     });
+
+    // Force-play all card videos on first user interaction (mobile fix)
+    function kickstartVideos() {
+        document.querySelectorAll('.s2-card__video').forEach(v => {
+            v.play().catch(() => {});
+        });
+        document.removeEventListener('touchstart', kickstartVideos);
+        document.removeEventListener('click', kickstartVideos);
+    }
+    document.addEventListener('touchstart', kickstartVideos, { once: true });
+    document.addEventListener('click', kickstartVideos, { once: true });
 }
