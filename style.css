@@ -799,8 +799,8 @@ html, body {
     flex: 1;
     padding: 14px 12px;
     border-radius: 16px;
-    background: rgba(20,20,24,0.3);
-    backdrop-filter: blur(12px);
+    background: rgba(10, 10, 15, 0.45); /* slightly darker for better readability */
+    backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255,255,255,0.06);
     display: flex;
@@ -933,10 +933,10 @@ html, body {
 }
 
 .content-ready .s2-left, .content-ready .s2-right {
-    animation: s2-fade-in 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation: s2-fade-in 3.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 .content-ready .s2-left { animation-delay: 0.3s; }
-.content-ready .s2-right { animation-delay: 0.9s; }
+.content-ready .s2-right { animation-delay: 1.2s; }
 
 
 @keyframes s2-fade-in {
