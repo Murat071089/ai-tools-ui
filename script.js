@@ -178,13 +178,26 @@ function initCards() {
             const info = document.getElementById('info-' + row);
             if (info) info.classList.add('is-active');
 
-            // Toggle play/pause
+            // Reset all OTHER videos
+            cards.forEach(c => {
+                if (c !== card) {
+                    const otherVideo = c.querySelector('.s2-card__video');
+                    if (otherVideo) {
+                        otherVideo.pause();
+                        otherVideo.currentTime = 0;
+                    }
+                    c.classList.remove('is-playing');
+                }
+            });
+
+            // Toggle play/pause for clicked video
             if (video) {
                 if (video.paused) {
                     video.play().catch(() => {});
                     card.classList.add('is-playing');
                 } else {
                     video.pause();
+                    video.currentTime = 0; // Return to first frame
                     card.classList.remove('is-playing');
                 }
             }
