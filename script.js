@@ -36,24 +36,28 @@ function triggerCinematicLoading() {
     const s2Grid = document.getElementById('s2-grid');
     
     if (!loader || !s2Grid) return;
-    if (s2Grid.classList.contains('content-ready') || loader.dataset.loading === "true") {
-        return; // Already ready or currently loading
-    }
+    if (loader.dataset.loading === "true") return; // Already loading
 
-    loader.classList.remove('is-hidden');
     loader.dataset.loading = "true";
     s2Grid.classList.remove('content-ready');
 
-    const delay = hasLoadedCinematicOnce ? 1000 : 4500;
-    hasLoadedCinematicOnce = true;
-
-    setTimeout(() => {
-        if (loader) {
+    if (!hasLoadedCinematicOnce) {
+        // ── ПЕРВЫЙ ВИЗИТ: полный кинематографический лоадер 4.5s ──
+        hasLoadedCinematicOnce = true;
+        loader.classList.remove('is-hidden');
+        setTimeout(() => {
             loader.classList.add('is-hidden');
             loader.dataset.loading = "false";
-        }
-        if (s2Grid) s2Grid.classList.add('content-ready');
-    }, delay);
+            s2Grid.classList.add('content-ready');
+        }, 4500);
+    } else {
+        // ── ПОВТОРНЫЙ ВИЗИТ: фон сразу, контент плавно появляется через 1.5s ──
+        loader.classList.add('is-hidden'); // скрываем лоадер сразу
+        setTimeout(() => {
+            loader.dataset.loading = "false";
+            s2Grid.classList.add('content-ready');
+        }, 1500);
+    }
 }
 
 function initSectionObserver() {
@@ -63,7 +67,17 @@ function initSectionObserver() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
+                // Section came into view — trigger loading/reveal
                 triggerCinematicLoading();
+            } else {
+                // Section left the viewport — reset so it re-animates on return
+                const loader = document.getElementById('s2-loader');
+                const s2Grid = document.getElementById('s2-grid');
+                
+                // Only reset if we're not currently loading
+                if (loader && loader.dataset.loading !== "true") {
+                    if (s2Grid) s2Grid.classList.remove('content-ready');
+                }
             }
         });
     }, { threshold: 0.25 });
