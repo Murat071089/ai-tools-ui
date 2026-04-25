@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileFullscreen();
     initSlider();
     initCards();
+    initCheckoutFlow();
 });
 
 /* === Splash → Fullscreen on tap === */
@@ -242,3 +243,49 @@ function initCards() {
         });
     });
 }
+
+function initCheckoutFlow() {
+    const accessBtns = document.querySelectorAll('.s2-access-btn');
+    accessBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const row = btn.getAttribute('data-row');
+            const card = document.getElementById('card-' + row);
+            
+            // Transform button to syncing state
+            btn.innerHTML = 'Синхронизация...';
+            btn.classList.add('is-syncing');
+
+            // Force play the robot video
+            if (card) {
+                // Ensure other active states and infos highlight properly
+                card.click();
+                
+                const video = card.querySelector('.s2-card__video');
+                if (video) {
+                    video.currentTime = 0;
+                    video.play().catch(() => {});
+                    card.classList.add('is-playing');
+                }
+            }
+
+            // Let the video sequence dramatically complete (~5.5s)
+            setTimeout(() => {
+                document.body.classList.add('go-to-checkout');
+                
+                // After fade to black completes
+                setTimeout(() => {
+                    // TODO: Replace with the actual URL
+                    // window.location.href = "https://your-payment-gateway.com";
+                    
+                    // Resetting for testing purposes without real redirect
+                    btn.innerHTML = 'Получить доступ';
+                    btn.classList.remove('is-syncing');
+                    document.body.classList.remove('go-to-checkout');
+                    alert("Переход на страницу оплаты!"); // Alert for preview demo purposes
+                }, 800);
+            }, 5500);
+        });
+    });
+}
+
+

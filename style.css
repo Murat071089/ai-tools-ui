@@ -853,7 +853,6 @@ html, body {
     font-family: 'Inter', sans-serif; 
     font-size: 0.75rem; 
     color: rgba(255,255,255,0.85); 
-    margin-top: auto; 
     padding: 6px 14px;
     border-radius: 20px;
     display: inline-flex;
@@ -890,6 +889,64 @@ html, body {
 .s2-price__val--claude { color: #fde047; }
 .s2-price__val--gemini { color: #93c5fd; }
 
+.s2-access-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 7px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    margin-top: auto;
+    margin-bottom: 4px;
+}
+
+.s2-access-btn:active { transform: scale(0.95); }
+
+.s2-access-btn--gpt:hover { background: rgba(94, 234, 212, 0.15); border-color: rgba(94, 234, 212, 0.4); box-shadow: 0 0 12px rgba(94, 234, 212, 0.2); }
+.s2-access-btn--claude:hover { background: rgba(253, 224, 71, 0.15); border-color: rgba(253, 224, 71, 0.4); box-shadow: 0 0 12px rgba(253, 224, 71, 0.2); }
+.s2-access-btn--gemini:hover { background: rgba(147, 197, 253, 0.15); border-color: rgba(147, 197, 253, 0.4); box-shadow: 0 0 12px rgba(147, 197, 253, 0.2); }
+
+.s2-access-btn.is-syncing {
+    pointer-events: none;
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.95);
+    border-color: rgba(255,255,255,0.4);
+}
+
+.s2-access-btn.is-syncing::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    animation: btn-glare 1.2s infinite;
+}
+
+@keyframes btn-glare {
+    100% { left: 200%; }
+}
+
+.checkout-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    background: #000000;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+body.go-to-checkout .checkout-overlay {
+    opacity: 1;
+    pointer-events: all;
+}
 .s2-card {
     position: relative;
     border-radius: 16px;
