@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSplash();
     initMobileFullscreen();
     initSlider();
+    initScreens();
 });
 
 /* === Splash → Fullscreen on tap === */
@@ -157,4 +158,78 @@ function initSlider() {
     });
 
     document.addEventListener('mouseup', endDrag);
+}
+
+/* ═══════════════════════════════════════
+   SCREENS — Navigation & Interactions
+   ═══════════════════════════════════════ */
+function initScreens() {
+    const screenProduct  = document.getElementById('screen-product');
+    const screenCheckout = document.getElementById('screen-checkout');
+    const card1          = document.getElementById('card-video');
+    if (!screenProduct || !screenCheckout) return;
+
+    // --- Open Screen 2 from Card 1 ---
+    if (card1) {
+        card1.addEventListener('click', () => openScreen(screenProduct));
+    }
+
+    // --- Open Screen 3 from Product CTA ---
+    const productCta = document.getElementById('product-cta');
+    const productCard = document.getElementById('product-card');
+    if (productCta) productCta.addEventListener('click', () => openScreen(screenCheckout));
+    if (productCard) productCard.addEventListener('click', () => openScreen(screenCheckout));
+
+    // --- Back buttons ---
+    const productBack  = document.getElementById('product-back');
+    const checkoutBack = document.getElementById('checkout-back');
+    if (productBack)  productBack.addEventListener('click', () => closeScreen(screenProduct));
+    if (checkoutBack) checkoutBack.addEventListener('click', () => closeScreen(screenCheckout));
+
+    // --- Quantity +/- ---
+    const qtyMinus = document.getElementById('qty-minus');
+    const qtyPlus  = document.getElementById('qty-plus');
+    const qtyValue = document.getElementById('qty-value');
+    const sumSub   = document.getElementById('sum-sub');
+    const sumTotal = document.getElementById('sum-total');
+    const ctaPrice = document.getElementById('cta-price');
+    const PRICE = 990;
+    let qty = 1;
+
+    function updatePrices() {
+        const total = qty * PRICE;
+        if (qtyValue) qtyValue.textContent = qty;
+        if (sumSub)   sumSub.textContent   = total + ' ₽';
+        if (sumTotal) sumTotal.textContent  = total + ' ₽';
+        if (ctaPrice) ctaPrice.textContent  = total + ' ₽';
+    }
+
+    if (qtyPlus) qtyPlus.addEventListener('click', () => {
+        qty = Math.min(qty + 1, 10);
+        updatePrices();
+    });
+
+    if (qtyMinus) qtyMinus.addEventListener('click', () => {
+        qty = Math.max(qty - 1, 1);
+        updatePrices();
+    });
+
+    // --- Checkout tabs ---
+    const tabs = document.querySelectorAll('.checkout-tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('checkout-tab--active'));
+            tab.classList.add('checkout-tab--active');
+        });
+    });
+}
+
+function openScreen(screen) {
+    screen.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeScreen(screen) {
+    screen.classList.remove('is-open');
+    document.body.style.overflow = '';
 }
