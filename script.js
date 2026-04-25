@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initSplash();
     initMobileFullscreen();
     initSlider();
+    initCardVideo();
+    initScrubSlider();
 });
 
 /* === Splash → Fullscreen on tap === */
@@ -157,4 +159,183 @@ function initSlider() {
     });
 
     document.addEventListener('mouseup', endDrag);
+}
+
+/* === Card Video — open fullscreen overlay === */
+function initCardVideo() {
+    const card = document.getElementById('card-video');
+    const overlay = document.getElementById('scrub-overlay');
+    const video = document.getElementById('scrub-video');
+    const canvas = document.getElementById('scrub-canvas');
+    const closeBtn = document.getElementById('scrub-close');
+    if (!card || !overlay || !video || !canvas) return;
+
+    const ctx = canvas.getContext('2d');
+
+    function drawFrame() {
+        canvas.width = video.videoWidth || 1080;
+        canvas.height = video.videoHeight || 1920;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    }
+
+    card.addEventListener('click', () => {
+        overlay.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+
+        // Prime video for mobile — play then pause, then draw first frame
+        video.currentTime = 0;
+        const p = video.play();
+        if (p) {
+            p.then(() => {
+                video.pause();
+                video.currentTime = 0;
+                // Wait for seek to complete, then draw
+                video.addEventListener('seeked', function onFirstSeek() {
+                    video.removeEventListener('seeked', onFirstSeek);
+                    drawFrame();
+                });
+            }).catch(() => {
+                video.load();
+                video.addEventListener('loadeddata', function onLoad() {
+                    video.removeEventListener('loadeddata', onLoad);
+                    video.currentTime = 0;
+                    drawFrame();
+                });
+            });
+        }
+    });
+
+    closeBtn.addEventListener('click', () => {
+        overlay.classList.remove('is-open');
+        document.body.style.overflow = '';
+        video.pause();
+        video.currentTime = 0;
+        // Reset scrub slider
+        const thumb = document.getElementById('scrub-thumb');
+        const progress = document.getElementById('scrub-progress');
+        const text = overlay.querySelector('.scrub-slider__text');
+        if (thumb) { thumb.style.left = '5px'; thumb.style.transition = 'left 0.3s'; }
+        if (progress) { progress.style.width = '0%'; }
+        if (text) { text.style.opacity = '0.45'; }
+    });
+
+    // Store drawFrame globally so scrub slider can use it
+    window._scrubDrawFrame = drawFrame;
+}
+
+/* === Scrub Slider — drag to control video time via Canvas === */
+function initScrubSlider() {
+    const overlay = document.getElementById('scrub-overlay');
+    const slider = document.getElementById('scrub-slider');
+    const thumb = document.getElementById('scrub-thumb');
+    const video = document.getElementById('scrub-video');
+    const progressBar = document.getElementById('scrub-progress');
+    if (!slider || !thumb || !video || !overlay) return;
+
+    thumb.style.touchAction = 'none';
+    slider.style.touchAction = 'none';
+
+    let scrubDragging = false;
+    let scrubCurrentX = 0;
+    let scrubStartX = 0;
+    const minLeft = 5;
+    let pendingSeek = false;
+
+    function getMaxLeft() {
+        return slider.offsetWidth - thumb.offsetWidth - 7;
+    }
+
+    // Listen for seeked event to draw frame on canvas
+    video.addEventListener('seeked', () => {
+        pendingSeek = false;
+        if (window._scrubDrawFrame) window._scrubDrawFrame();
+    });
+
+    function scrubStart(clientX) {
+        scrubDragging = true;
+        scrubStartX = clientX - scrubCurrentX;
+        thumb.style.transition = 'none';
+        if (progressBar) progressBar.style.transition = 'none';
+    }
+
+    function scrubMove(clientX) {
+        if (!scrubDragging) return;
+        let x = clientX - scrubStartX;
+        const maxLeft = getMaxLeft();
+        if (maxLeft <= 0) return;
+        x = Math.max(0, Math.min(x, maxLeft));
+        scrubCurrentX = x;
+        thumb.style.left = (minLeft + x) + 'px';
+
+        const progress = x / maxLeft;
+
+        // Seek video — only if not already seeking
+        if (!pendingSeek && video.readyState >= 1 && video.duration && isFinite(video.duration)) {
+            pendingSeek = true;
+            video.currentTime = Math.min(progress * video.duration, video.duration - 0.05);
+        }
+
+        if (progressBar) {
+            progressBar.style.width = (progress * 100) + '%';
+        }
+
+        const text = slider.querySelector('.scrub-slider__text');
+        if (text) text.style.opacity = Math.max(0, 0.45 - progress * 0.7);
+    }
+
+    function scrubEnd() {
+        if (!scrubDragging) return;
+        scrubDragging = false;
+
+        // Always snap back to start
+        thumb.style.transition = 'left 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        thumb.style.left = minLeft + 'px';
+        scrubCurrentX = 0;
+        if (progressBar) {
+            progressBar.style.transition = 'width 0.4s';
+            progressBar.style.width = '0%';
+        }
+        if (video.readyState >= 1) video.currentTime = 0;
+        const text = slider.querySelector('.scrub-slider__text');
+        if (text) {
+            text.style.transition = 'opacity 0.4s';
+            text.style.opacity = '0.45';
+        }
+    }
+
+    // Touch events on SLIDER + OVERLAY
+    slider.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        scrubStart(e.touches[0].clientX);
+    }, { passive: false });
+
+    overlay.addEventListener('touchmove', (e) => {
+        if (scrubDragging) {
+            e.preventDefault();
+            e.stopPropagation();
+            scrubMove(e.touches[0].clientX);
+        }
+    }, { passive: false });
+
+    overlay.addEventListener('touchend', (e) => {
+        if (scrubDragging) {
+            e.stopPropagation();
+            scrubEnd();
+        }
+    });
+
+    // Mouse events
+    slider.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        scrubStart(e.clientX);
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (scrubDragging) scrubMove(e.clientX);
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (scrubDragging) scrubEnd();
+    });
 }
