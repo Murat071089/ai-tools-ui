@@ -117,6 +117,14 @@ function initSlider() {
                 const section2 = document.getElementById('section-2');
                 if (section2) {
                     section2.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Cinematic Loading: trigger content reveal after 4.5 seconds
+                    setTimeout(() => {
+                        const loader = document.getElementById('s2-loader');
+                        const s2Grid = document.getElementById('s2-grid');
+                        if (loader) loader.classList.add('is-hidden');
+                        if (s2Grid) s2Grid.classList.add('content-ready');
+                    }, 4500);
                 }
             }, 400);
         } else {
