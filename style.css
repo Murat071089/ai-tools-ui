@@ -767,3 +767,257 @@ html, body {
     .cta-btn { max-width: 440px; margin: 0 auto; padding: 12px 18px; }
     .cta-btn__text { font-size: 1.2rem; }
 }
+
+
+/* ═══════════════════════════════════════
+   SECTION 2 — AI Tools Split Layout
+   ═══════════════════════════════════════ */
+
+.section-2 {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    padding: 32px 16px 40px;
+}
+
+/* --- Space / Circuit Background --- */
+.s2-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+        radial-gradient(ellipse at 70% 15%, rgba(200,170,100,0.08) 0%, transparent 45%),
+        radial-gradient(ellipse at 20% 80%, rgba(100,140,200,0.06) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 50%, rgba(16,163,127,0.04) 0%, transparent 50%),
+        linear-gradient(175deg, #060612 0%, #0a0a1a 30%, #080816 60%, #050510 100%);
+}
+
+/* Animated stars */
+.s2-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 60% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80% 40%, rgba(255,255,255,0.25) 0%, transparent 100%),
+        radial-gradient(1px 1px at 45% 85%, rgba(255,255,255,0.35) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 90% 75%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 15% 45%, rgba(200,170,100,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 75% 90%, rgba(100,180,255,0.3) 0%, transparent 100%);
+    animation: twinkle 6s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* Circuit lines overlay */
+.s2-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg, transparent 49.5%, rgba(200,170,100,0.04) 49.5%, rgba(200,170,100,0.04) 50.5%, transparent 50.5%),
+        linear-gradient(0deg, transparent 49.5%, rgba(200,170,100,0.03) 49.5%, rgba(200,170,100,0.03) 50.5%, transparent 50.5%);
+    background-size: 80px 80px;
+    opacity: 0.5;
+}
+
+/* --- Section Header --- */
+.s2-header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.s2-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff 20%, rgba(200,170,100,0.9));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.s2-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.45);
+    margin-top: 6px;
+    letter-spacing: 0.01em;
+}
+
+/* --- Split Grid --- */
+.s2-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 12px;
+    align-items: center;
+}
+
+/* --- Info blocks (left column) --- */
+.s2-info {
+    padding: 14px 12px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: background 0.4s, border-color 0.4s, transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.s2-info.is-active {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.15);
+    transform: scale(1.02);
+}
+
+/* Badges */
+.s2-badge {
+    display: inline-block;
+    width: fit-content;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.s2-badge--gpt {
+    color: #10a37f;
+    background: rgba(16,163,127,0.12);
+    border: 1px solid rgba(16,163,127,0.25);
+}
+
+.s2-badge--claude {
+    color: #e8945a;
+    background: rgba(232,148,90,0.12);
+    border: 1px solid rgba(232,148,90,0.25);
+}
+
+.s2-badge--gemini {
+    color: #6ea8fe;
+    background: rgba(110,168,254,0.12);
+    border: 1px solid rgba(110,168,254,0.25);
+}
+
+.s2-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #f0f0f5;
+    line-height: 1.2;
+}
+
+.s2-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.35;
+}
+
+.s2-price {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.35);
+    margin-top: 2px;
+}
+
+.s2-price__val {
+    font-weight: 800;
+    font-size: 0.95rem;
+}
+
+.s2-price__val--gpt { color: #1de9b6; }
+.s2-price__val--claude { color: #f0a868; }
+.s2-price__val--gemini { color: #88b8ff; }
+
+/* --- Video Cards (right column) --- */
+.s2-card {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    aspect-ratio: 9 / 14;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1),
+                border-color 0.3s,
+                box-shadow 0.3s;
+}
+
+.s2-card:active {
+    transform: scale(0.96);
+}
+
+.s2-card.is-active {
+    border-color: rgba(255,255,255,0.2);
+    box-shadow: 0 0 30px rgba(255,255,255,0.06);
+}
+
+.s2-card__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Glow overlays */
+.s2-card__glow {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+    border-radius: 18px;
+}
+
+.s2-card.is-active .s2-card__glow {
+    opacity: 1;
+}
+
+.s2-card__glow--gpt {
+    box-shadow: inset 0 0 40px rgba(16,163,127,0.2), 0 0 20px rgba(16,163,127,0.15);
+}
+
+.s2-card__glow--claude {
+    box-shadow: inset 0 0 40px rgba(232,148,90,0.2), 0 0 20px rgba(232,148,90,0.15);
+}
+
+.s2-card__glow--gemini {
+    box-shadow: inset 0 0 40px rgba(110,168,254,0.2), 0 0 20px rgba(110,168,254,0.15);
+}
+
+/* --- Fade-in animation on scroll --- */
+.s2-info, .s2-card {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: s2-fade-in 0.6s ease-out forwards;
+}
+
+.s2-grid > :nth-child(1) { animation-delay: 0.1s; }
+.s2-grid > :nth-child(2) { animation-delay: 0.15s; }
+.s2-grid > :nth-child(3) { animation-delay: 0.25s; }
+.s2-grid > :nth-child(4) { animation-delay: 0.3s; }
+.s2-grid > :nth-child(5) { animation-delay: 0.4s; }
+.s2-grid > :nth-child(6) { animation-delay: 0.45s; }
+
+@keyframes s2-fade-in {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

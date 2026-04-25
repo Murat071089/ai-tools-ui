@@ -76,34 +76,62 @@
         </div>
     </section>
 
-    <!-- Second section — Cards Grid -->
+    <!-- Second section — AI Tools Split Layout -->
     <section class="section-2" id="section-2">
-        <div class="cards-grid">
-            <!-- Card 1 — Video -->
-            <div class="card card--video" id="card-video">
-                <video class="card__media" muted loop autoplay playsinline preload="auto">
+        <!-- Space circuit background -->
+        <div class="s2-bg"></div>
+
+        <!-- Section header -->
+        <div class="s2-header">
+            <h2 class="s2-title">Выбери AI&#8209;инструмент</h2>
+            <p class="s2-subtitle">Лучшие нейросети для работы, кода и роста</p>
+        </div>
+
+        <!-- Split grid -->
+        <div class="s2-grid">
+
+            <!-- ROW 1 — ChatGPT -->
+            <div class="s2-info s2-info--gpt" id="info-1">
+                <span class="s2-badge s2-badge--gpt">GPT-4o</span>
+                <h3 class="s2-name">ChatGPT Plus</h3>
+                <p class="s2-desc">Тексты, идеи, анализ, помощь&nbsp;24/7</p>
+                <p class="s2-price">от <span class="s2-price__val s2-price__val--gpt">990 ₽</span></p>
+            </div>
+            <div class="s2-card" id="card-1" data-row="1">
+                <video class="s2-card__video" muted loop autoplay playsinline preload="auto">
                     <source src="Image to video 丨 A cinematic 6-second video of a futuristic robot being assemble.mp4" type="video/mp4">
                 </video>
+                <div class="s2-card__glow s2-card__glow--gpt"></div>
             </div>
-            <!-- Card 2 — Video -->
-            <div class="card card--video" id="card-video-2">
-                <video class="card__media" muted loop autoplay playsinline preload="auto">
+
+            <!-- ROW 2 — Claude -->
+            <div class="s2-info s2-info--claude" id="info-2">
+                <span class="s2-badge s2-badge--claude">Pro Tools</span>
+                <h3 class="s2-name">Claude Code</h3>
+                <p class="s2-desc">Кодинг, логика, структура, сложные&nbsp;задачи</p>
+                <p class="s2-price">от <span class="s2-price__val s2-price__val--claude">990 ₽</span></p>
+            </div>
+            <div class="s2-card" id="card-2" data-row="2">
+                <video class="s2-card__video" muted loop autoplay playsinline preload="auto">
                     <source src="КАРТОЧКА 2.mp4" type="video/mp4">
                 </video>
+                <div class="s2-card__glow s2-card__glow--claude"></div>
             </div>
-            <!-- Card 3 — Video -->
-            <div class="card card--video" id="card-video-3">
-                <video class="card__media" muted loop autoplay playsinline preload="auto">
+
+            <!-- ROW 3 — Gemini -->
+            <div class="s2-info s2-info--gemini" id="info-3">
+                <span class="s2-badge s2-badge--gemini">Fast AI</span>
+                <h3 class="s2-name">Gemini Pro</h3>
+                <p class="s2-desc">Поиск, мультимодальность, скорость, Google&nbsp;AI</p>
+                <p class="s2-price">от <span class="s2-price__val s2-price__val--gemini">990 ₽</span></p>
+            </div>
+            <div class="s2-card" id="card-3" data-row="3">
+                <video class="s2-card__video" muted loop autoplay playsinline preload="auto">
                     <source src="карточка 3 джемини.mp4" type="video/mp4">
                 </video>
+                <div class="s2-card__glow s2-card__glow--gemini"></div>
             </div>
-            <!-- Card 4 — placeholder -->
-            <div class="card card--empty">
-                <div class="card__placeholder">
-                    <span class="card__lock">🔒</span>
-                    <span class="card__soon">Soon</span>
-                </div>
-            </div>
+
         </div>
     </section>
 

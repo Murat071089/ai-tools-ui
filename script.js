@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSplash();
     initMobileFullscreen();
     initSlider();
+    initCards();
 });
 
 /* === Splash → Fullscreen on tap === */
@@ -157,4 +158,23 @@ function initSlider() {
     });
 
     document.addEventListener('mouseup', endDrag);
+}
+
+/* === Card ↔ Info highlight === */
+function initCards() {
+    const cards = document.querySelectorAll('.s2-card');
+    const infos = document.querySelectorAll('.s2-info');
+    if (!cards.length) return;
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const row = card.getAttribute('data-row');
+            // Toggle active state
+            cards.forEach(c => c.classList.remove('is-active'));
+            infos.forEach(i => i.classList.remove('is-active'));
+            card.classList.add('is-active');
+            const info = document.getElementById('info-' + row);
+            if (info) info.classList.add('is-active');
+        });
+    });
 }
