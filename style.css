@@ -752,28 +752,79 @@ html, body {
 }
 
 .s2-badge {
-    display: inline-block;
-    width: fit-content;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.55rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 3px 7px;
-    border-radius: 5px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 0;
+    border: none;
+    background: transparent;
+    text-transform: none;
+    margin-bottom: -1px;
 }
 
-.s2-badge--gpt { color: #1de9b6; background: rgba(29,233,182,0.1); border: 1px solid rgba(29,233,182,0.2); }
-.s2-badge--claude { color: #f0a868; background: rgba(240,168,104,0.1); border: 1px solid rgba(240,168,104,0.2); }
-.s2-badge--gemini { color: #88b8ff; background: rgba(136,184,255,0.1); border: 1px solid rgba(136,184,255,0.2); }
+.s2-badge--gpt { color: #5eead4; }
+.s2-badge--claude { color: #fde047; }
+.s2-badge--gemini { color: #93c5fd; }
 
-.s2-name { font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 700; color: #fff; line-height: 1.2; }
-.s2-desc { font-family: 'Inter', sans-serif; font-size: 0.65rem; color: rgba(255,255,255,0.5); line-height: 1.35; }
-.s2-price { font-family: 'Inter', sans-serif; font-size: 0.65rem; color: rgba(255,255,255,0.35); margin-top: 2px; }
-.s2-price__val { font-weight: 800; font-size: 0.9rem; }
-.s2-price__val--gpt { color: #1de9b6; }
-.s2-price__val--claude { color: #f0a868; }
-.s2-price__val--gemini { color: #88b8ff; }
+.s2-name { 
+    font-family: 'Inter', sans-serif; 
+    font-size: 1.45rem; 
+    font-weight: 800; 
+    color: #ffffff; 
+    line-height: 1.1; 
+    letter-spacing: -0.04em; 
+}
+
+.s2-desc { 
+    font-family: 'Inter', sans-serif; 
+    font-size: 0.75rem; 
+    color: rgba(255,255,255,0.75); 
+    line-height: 1.4; 
+    margin-top: 3px; 
+}
+
+.s2-price { 
+    font-family: 'Inter', sans-serif; 
+    font-size: 0.75rem; 
+    color: rgba(255,255,255,0.85); 
+    margin-top: auto; 
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: baseline;
+    width: fit-content;
+    gap: 4px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.1);
+}
+
+/* Color-coded glow and borders for price pills */
+.s2-info--gpt .s2-price {
+    background: linear-gradient(to right, rgba(94, 234, 212, 0.08), rgba(94, 234, 212, 0.02));
+    border: 1px solid rgba(94, 234, 212, 0.25);
+}
+.s2-info--claude .s2-price {
+    background: linear-gradient(to right, rgba(253, 224, 71, 0.08), rgba(253, 224, 71, 0.02));
+    border: 1px solid rgba(253, 224, 71, 0.25);
+}
+.s2-info--gemini .s2-price {
+    background: linear-gradient(to right, rgba(147, 197, 253, 0.08), rgba(147, 197, 253, 0.02));
+    border: 1px solid rgba(147, 197, 253, 0.25);
+}
+
+.s2-price__val { 
+    font-family: 'Inter', sans-serif; 
+    font-weight: 800; 
+    font-size: 0.95rem; 
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.s2-price__val--gpt { color: #5eead4; }
+.s2-price__val--claude { color: #fde047; }
+.s2-price__val--gemini { color: #93c5fd; }
 
 .s2-card {
     position: relative;
