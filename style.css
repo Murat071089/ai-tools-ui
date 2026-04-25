@@ -922,10 +922,19 @@ html, body {
 }
 
 
-.s2-card__glow { position: absolute; inset: 0; pointer-events: none; border-radius: 16px; z-index: 2; }
-.s2-card__glow--gpt { box-shadow: inset 0 0 0 1.5px rgba(29,233,182,0.35), inset 0 0 24px rgba(29,233,182,0.12); }
-.s2-card__glow--claude { box-shadow: inset 0 0 0 1.5px rgba(240,168,104,0.35), inset 0 0 24px rgba(240,168,104,0.12); }
-.s2-card__glow--gemini { box-shadow: inset 0 0 0 1.5px rgba(136,184,255,0.35), inset 0 0 24px rgba(136,184,255,0.12); }
+.s2-card__glow { position: absolute; inset: 0; pointer-events: none; border-radius: 16px; z-index: 2; mix-blend-mode: screen; }
+.s2-card__glow--gpt { 
+    box-shadow: inset 0 0 0 1.5px rgba(29,233,182,0.35), inset 0 0 24px rgba(29,233,182,0.12); 
+    background: radial-gradient(circle at 65% 50%, rgba(94, 234, 212, 0.35) 0%, transparent 35%);
+}
+.s2-card__glow--claude { 
+    box-shadow: inset 0 0 0 1.5px rgba(240,168,104,0.35), inset 0 0 24px rgba(240,168,104,0.12); 
+    background: radial-gradient(circle at 71% 52%, rgba(253, 224, 71, 0.35) 0%, transparent 35%);
+}
+.s2-card__glow--gemini { 
+    box-shadow: inset 0 0 0 1.5px rgba(136,184,255,0.35), inset 0 0 24px rgba(136,184,255,0.12); 
+    background: radial-gradient(circle at 68% 50%, rgba(147, 197, 253, 0.35) 0%, transparent 35%);
+}
 
 .s2-left, .s2-right {
     opacity: 0;
