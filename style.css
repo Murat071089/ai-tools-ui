@@ -894,7 +894,7 @@ html, body {
     inset: 0;
     z-index: 0;
     /* Pure background image with no global darkening */
-    background-image: url("фон для ии.jpeg");
+    background-image: url("фон для ии.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
