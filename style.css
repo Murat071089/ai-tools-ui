@@ -248,30 +248,71 @@ html, body {
     animation: fade-in 0.8s ease-out 0.3s both;
 }
 
+/* Localized dark backdrop behind text only */
+.hero__top::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -24px;
+    right: -24px;
+    bottom: -16px;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.5) 60%,
+        transparent 100%
+    );
+    border-radius: 0 0 40px 40px;
+    z-index: -1;
+    pointer-events: none;
+}
+
 .hero__title {
     font-weight: 900;
-    line-height: 1.15;
-    letter-spacing: -0.025em;
-    margin-bottom: 10px;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 14px;
     text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8), 0 4px 40px rgba(0, 0, 0, 0.5);
 }
 
 .title-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 1.75rem;
+    display: block;
+    font-size: 1.55rem;
     color: var(--text-white);
+    white-space: nowrap;
 }
 
 .title-row--gold {
     display: block;
-    font-size: 2.3rem;
-    background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+    font-size: 2.4rem;
+    margin-top: 2px;
+    background: linear-gradient(180deg, #f5d67b 0%, var(--gold) 45%, #b8892e 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 2px 10px rgba(212, 168, 67, 0.3));
+    filter: drop-shadow(0 2px 12px rgba(212, 168, 67, 0.35));
+}
+
+/* Description lines */
+.hero__desc {
+    animation: fade-in 0.8s ease-out 0.55s both;
+}
+
+.hero__desc-line {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: rgba(200, 195, 185, 0.75);
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9);
+    margin: 0;
+}
+
+.hero__desc-line--accent {
+    color: var(--gold);
+    font-weight: 600;
+    margin-top: 4px;
+    text-shadow: 0 0 14px rgba(212, 168, 67, 0.3), 0 1px 8px rgba(0, 0, 0, 0.9);
 }
 
 /* Robot circular badge */
@@ -297,12 +338,12 @@ html, body {
     transform: scale(1.8);
 }
 
-/* Subtitle */
+/* Subtitle (legacy fallback) */
 .hero__subtitle {
-    font-size: 0.92rem;
+    font-size: 0.85rem;
     font-weight: 400;
-    line-height: 1.55;
-    color: var(--text-gray);
+    line-height: 1.5;
+    color: rgba(200, 195, 185, 0.75);
     text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8), 0 2px 24px rgba(0, 0, 0, 0.4);
     animation: fade-in 0.8s ease-out 0.5s both;
 }
@@ -383,29 +424,38 @@ html, body {
 .slider-btn {
     position: relative;
     width: 100%;
-    height: 68px;
-    border: 1.5px solid rgba(212, 168, 67, 0.5);
+    height: 60px;
+    border: 1.5px solid rgba(212, 168, 67, 0.45);
     border-radius: 50px;
-    background: rgba(255, 255, 255, 0.12); /* Make it brighter */
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
     overflow: hidden;
     box-shadow:
-        0 4px 24px rgba(0, 0, 0, 0.6),
-        0 0 24px rgba(212, 168, 67, 0.15), /* Bright gold glow */
-        inset 0 0 12px rgba(255, 255, 255, 0.05); /* Inner bright reflection */
+        0 4px 20px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(212, 168, 67, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
     -webkit-tap-highlight-color: transparent;
     touch-action: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.slider-btn:active {
+    transform: scale(0.98);
+    box-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.5),
+        0 0 28px rgba(212, 168, 67, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 /* ─── Pulsing Arrows ─── */
 .slider-btn__arrows {
     position: absolute;
-    right: 32px;
+    right: 20px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
-    gap: 4px;
+    gap: 3px;
     align-items: center;
     pointer-events: none;
     z-index: 1;
@@ -413,10 +463,10 @@ html, body {
 
 .slider-btn__arrows span {
     display: block;
-    width: 8px;
-    height: 14px;
-    border-right: 2px solid rgba(212, 168, 67, 0.8);
-    border-bottom: 2px solid rgba(212, 168, 67, 0.8);
+    width: 7px;
+    height: 12px;
+    border-right: 1.5px solid rgba(212, 168, 67, 0.7);
+    border-bottom: 1.5px solid rgba(212, 168, 67, 0.7);
     transform: rotate(-45deg);
     animation: arrow-pulse 1.5s infinite;
 }
@@ -434,21 +484,21 @@ html, body {
 /* Draggable thumb (robot icon) */
 .slider-btn__thumb {
     position: absolute;
-    left: 6px;
+    left: 5px;
     top: 50%;
     transform: translateY(-50%);
-    width: 54px;
-    height: 54px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     overflow: hidden;
     background: #0e0e0a;
-    border: 1.5px solid rgba(180, 150, 60, 0.5);
+    border: 1.5px solid rgba(180, 150, 60, 0.45);
     cursor: grab;
     z-index: 2;
     transition: left 0s;
     box-shadow:
-        0 2px 12px rgba(0, 0, 0, 0.5),
-        0 0 14px rgba(212, 168, 67, 0.1);
+        0 2px 10px rgba(0, 0, 0, 0.5),
+        0 0 12px rgba(212, 168, 67, 0.08);
 }
 
 .slider-btn__thumb:active {
@@ -471,12 +521,13 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-left: 48px;
+    padding-right: 44px;
     font-family: 'Inter', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.85); /* Much brighter text */
-    text-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 0 12px rgba(255,255,255,0.2);
-    letter-spacing: 0.02em;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.03em;
     z-index: 1;
     pointer-events: none;
     user-select: none;
