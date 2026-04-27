@@ -7,22 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSectionObserver();
 });
 
-function initSplash() {
-    const splash = document.getElementById('splash');
-    const enterBtn = document.getElementById('splash-enter');
-    if (!splash) return;
 
-    // Click anywhere on splash (or specifically the enter button) to dismiss
-    splash.addEventListener('click', () => {
-        splash.classList.add('is-hidden');
-        // Start hero video after splash fades
-        const video = document.getElementById('heroVideo');
-        if (video) {
-            video.play().catch(() => {});
-            video.style.opacity = '1';
-        }
-    });
-}
 
 let currentStep = 0;
 
@@ -79,8 +64,8 @@ function triggerCinematicLoading() {
 let lastScrollY = 0;
 
 function initSectionObserver() {
+    const hero = document.getElementById('hero');
     const section2 = document.getElementById('section-2');
-    if (!section2) return;
 
     // Track scroll direction
     window.addEventListener('scroll', () => {
@@ -89,33 +74,53 @@ function initSectionObserver() {
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            const s2Grid = document.getElementById('s2-grid');
-            
-            if (entry.isIntersecting) {
-                // Detect if user came from above or below
-                const rect = entry.boundingClientRect;
-                const fromBelow = rect.top > 0; // section is below viewport → user scrolled down
-                
-                if (s2Grid) {
-                    s2Grid.classList.toggle('from-below', fromBelow);
+            // Handle Hero Section video restart from 6th second
+            if (entry.target.id === 'hero') {
+                const video = document.getElementById('heroVideo');
+                if (entry.isIntersecting && video && !document.getElementById('splash')) {
+                    // Only trigger if splash screen is gone
+                    video.currentTime = 6;
+                    video.play().catch(() => {});
                 }
-                
-                // Section came into view — trigger loading/reveal
-                triggerCinematicLoading();
-            } else {
-                // Section left the viewport — reset so it re-animates on return
-                const loader = document.getElementById('s2-loader');
+            }
+            
+            // Handle Section 2 reveals and video pauses
+            if (entry.target.id === 'section-2') {
                 const s2Grid = document.getElementById('s2-grid');
                 
-                // Only reset if we're not currently loading
-                if (loader && loader.dataset.loading !== "true") {
-                    if (s2Grid) s2Grid.classList.remove('content-ready');
+                if (entry.isIntersecting) {
+                    const rect = entry.boundingClientRect;
+                    const fromBelow = rect.top > 0;
+                    if (s2Grid) {
+                        s2Grid.classList.toggle('from-below', fromBelow);
+                    }
+                    triggerCinematicLoading();
+                } else {
+                    // Reset cinematic animation state
+                    const loader = document.getElementById('s2-loader');
+                    if (loader && loader.dataset.loading !== "true") {
+                        if (s2Grid) s2Grid.classList.remove('content-ready');
+                    }
+                    
+                    // Stop & reset all second page videos automatically when leaving screen
+                    const cards = document.querySelectorAll('.s2-card');
+                    cards.forEach(c => {
+                        const otherVideo = c.querySelector('.s2-card__video');
+                        if (otherVideo) {
+                            otherVideo.pause();
+                            otherVideo.currentTime = 0;
+                        }
+                        c.classList.remove('is-playing');
+                        c.classList.remove('is-active');
+                    });
+                    document.querySelectorAll('.s2-info').forEach(i => i.classList.remove('is-active'));
                 }
             }
         });
     }, { threshold: 0.25 });
 
-    observer.observe(section2);
+    if (hero) observer.observe(hero);
+    if (section2) observer.observe(section2);
 }
 
 /* === Splash → Fullscreen on tap === */
@@ -131,10 +136,10 @@ function initSplash() {
             || el.msRequestFullscreen;
         if (requestFS) requestFS.call(el).catch(() => {});
 
-        // Start video from beginning
+        // Start video from 6th second!
         const video = document.getElementById('heroVideo');
         if (video) {
-            video.currentTime = 0;
+            video.currentTime = 6;
             video.play().then(() => {
                 video.classList.add('is-playing');
             }).catch(() => {
