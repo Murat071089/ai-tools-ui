@@ -194,7 +194,7 @@ body {
     color: var(--text-white);
     overflow-x: hidden;
     overflow-y: scroll;
-    scroll-snap-type: y proximity;
+    scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     -webkit-font-smoothing: antialiased;
