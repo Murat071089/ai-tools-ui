@@ -270,25 +270,23 @@ html, body {
 
 .hero__title {
     font-weight: 900;
-    line-height: 1.1;
+    line-height: 1.05;
     letter-spacing: -0.03em;
-    margin-bottom: 14px;
+    margin-bottom: 8px;
     text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8), 0 4px 40px rgba(0, 0, 0, 0.5);
 }
 
 .title-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.4rem;
+    display: block;
+    font-size: 1.25rem;
     color: var(--text-white);
     white-space: nowrap;
 }
 
 .title-row--gold {
     display: block;
-    font-size: 2.1rem;
-    margin-top: 2px;
+    font-size: 1.85rem;
+    margin-top: 0;
     background: linear-gradient(180deg, #f5d67b 0%, var(--gold) 45%, #b8892e 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -326,8 +324,8 @@ html, body {
 /* Robot circular badge */
 .robot-badge {
     display: inline-flex;
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     overflow: hidden;
     border: 1.5px solid var(--gold-border);
@@ -336,6 +334,14 @@ html, body {
     box-shadow:
         0 2px 12px rgba(0, 0, 0, 0.5),
         0 0 16px rgba(212, 168, 67, 0.1);
+}
+
+/* Hero badge: pinned to top-right */
+.robot-badge--hero {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 3;
 }
 
 .robot-badge__img {
