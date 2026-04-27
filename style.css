@@ -176,7 +176,7 @@ html, body {
         rgba(5, 5, 8, 0.92) 100%
     );
     pointer-events: none;
-    z-index: 10;
+    z-index: 1;
 }
 
 /* ═══════════════════════════
@@ -755,7 +755,7 @@ html, body {
         rgba(4, 4, 10, 0.95) 100%
     );
     pointer-events: none;
-    z-index: 10;
+    z-index: 1;
 }
 
 .s2-bg {
@@ -853,7 +853,7 @@ html, body {
 
 .s2-grid {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     display: flex;
     gap: 10px;
     width: 100%;
