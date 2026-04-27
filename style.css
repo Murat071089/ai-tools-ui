@@ -9,19 +9,20 @@
 }
 
 /* ═══════════════════════════
-   SPLASH — Fullscreen Entry
+   SPLASH — Cinematic Trailer
    ═══════════════════════════ */
 .splash {
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background: #050505;
+    background: #030303;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
 }
 
 .splash.is-hidden {
@@ -30,25 +31,77 @@
     pointer-events: none;
 }
 
-.splash__inner {
+/* ─── Cinema text container ─── */
+.splash__cinema {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 28px;
-    animation: splash-in 0.8s ease-out both;
+    gap: 0;
+    margin-bottom: 48px;
+}
+
+.splash__word {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    text-align: center;
+    opacity: 0;
+}
+
+/* Word 1: "Эволюция" — fade in at 0.3s, fade out at 1.8s */
+.splash__word--1 {
+    font-size: 2.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.04em;
+    animation: cinema-flash 1.8s ease 0.3s forwards;
+}
+
+/* Word 2: "интеллекта" — fade in at 2s, fade out at 3.5s */
+.splash__word--2 {
+    font-size: 2.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.04em;
+    animation: cinema-flash 1.8s ease 2s forwards;
+}
+
+/* Word 3: "в твоих руках" — fade in at 3.8s, STAYS */
+.splash__word--3 {
+    font-size: 2.6rem;
+    margin-top: 8px;
+    background: linear-gradient(180deg, #f5d67b 0%, #d4a843 45%, #b8892e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 2px 16px rgba(212, 168, 67, 0.4));
+    animation: cinema-stay 1.2s ease 3.8s forwards;
+}
+
+/* ─── Enter button (circle + text) ─── */
+.splash__enter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    opacity: 0;
+    animation: cinema-stay 1s ease 5s forwards;
 }
 
 .splash__ring {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+    transition: transform 0.3s ease;
 }
 
-/* Pulsing ring */
+.splash__ring:active {
+    transform: scale(0.92);
+}
+
+/* Pulsing rings */
 .splash__ring::before {
     content: '';
     position: absolute;
@@ -61,15 +114,15 @@
 .splash__ring::after {
     content: '';
     position: absolute;
-    inset: -16px;
+    inset: -14px;
     border-radius: 50%;
     border: 1px solid rgba(212, 168, 67, 0.15);
     animation: pulse-ring 2s ease-in-out 0.5s infinite;
 }
 
 .splash__icon {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     overflow: hidden;
     border: 2px solid rgba(140, 120, 50, 0.5);
@@ -86,19 +139,27 @@
     transform: scale(1.8);
 }
 
-.splash__text {
+.splash__tap {
     font-family: 'Inter', sans-serif;
-    font-size: 1rem;
+    font-size: 0.85rem;
     font-weight: 500;
     color: rgba(212, 168, 67, 0.7);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     animation: text-pulse 2s ease-in-out infinite;
 }
 
-@keyframes splash-in {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
+/* ─── Keyframes ─── */
+@keyframes cinema-flash {
+    0%   { opacity: 0; transform: translateY(10px) scale(0.96); filter: blur(4px); }
+    20%  { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    75%  { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    100% { opacity: 0; transform: translateY(-6px) scale(0.98); filter: blur(2px); }
+}
+
+@keyframes cinema-stay {
+    0%   { opacity: 0; transform: translateY(12px); filter: blur(4px); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
 @keyframes pulse-ring {

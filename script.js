@@ -1,12 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
     initHistoryRouting();
     initSplash();
-    initMobileFullscreen();
     initSlider();
     initCards();
     initCheckoutFlow();
     initSectionObserver();
 });
+
+function initSplash() {
+    const splash = document.getElementById('splash');
+    const enterBtn = document.getElementById('splash-enter');
+    if (!splash) return;
+
+    // Click anywhere on splash (or specifically the enter button) to dismiss
+    splash.addEventListener('click', () => {
+        splash.classList.add('is-hidden');
+        // Start hero video after splash fades
+        const video = document.getElementById('heroVideo');
+        if (video) {
+            video.play().catch(() => {});
+            video.style.opacity = '1';
+        }
+    });
+}
 
 let currentStep = 0;
 
