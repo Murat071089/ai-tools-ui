@@ -79,14 +79,16 @@ function initSectionObserver() {
             if (!video || document.getElementById('splash')) return;
 
             if (entry.isIntersecting) {
-                // Comes back into view -> play
+                // Prevent iOS from flashing the poster image when reclaiming memory
+                video.removeAttribute('poster');
+                
+                // Explicitly set to 6s just in case browser dropped the parked state
+                video.currentTime = 6;
                 video.play().catch(() => {});
             } else {
-                // Completely hidden -> park at 6s
+                // Completely hidden -> park at 6s immediately
                 video.pause();
-                // We wrap this in a small timeout to ensure the pause took effect
-                // before seeking, avoiding any visual jumps.
-                setTimeout(() => { video.currentTime = 6; }, 50);
+                video.currentTime = 6;
             }
         });
     }, { threshold: 0 });
