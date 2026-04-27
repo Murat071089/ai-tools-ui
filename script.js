@@ -111,6 +111,19 @@ function initSectionObserver() {
                 if (loader && loader.dataset.loading !== "true") {
                     if (s2Grid) s2Grid.classList.remove('content-ready');
                 }
+
+                // Stop & reset all second page videos automatically when leaving screen
+                const cards = document.querySelectorAll('.s2-card');
+                cards.forEach(c => {
+                    const video = c.querySelector('.s2-card__video');
+                    if (video) {
+                        video.pause();
+                        video.currentTime = 0;
+                    }
+                    c.classList.remove('is-playing');
+                    c.classList.remove('is-active');
+                });
+                document.querySelectorAll('.s2-info').forEach(i => i.classList.remove('is-active'));
             }
         });
     }, { threshold: 0.25 });
