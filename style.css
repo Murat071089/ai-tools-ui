@@ -258,8 +258,9 @@ html, body {
     bottom: -16px;
     background: linear-gradient(
         180deg,
-        rgba(0, 0, 0, 0.7) 0%,
-        rgba(0, 0, 0, 0.5) 60%,
+        rgba(0, 0, 0, 0.85) 0%,
+        rgba(0, 0, 0, 0.65) 55%,
+        rgba(0, 0, 0, 0.3) 80%,
         transparent 100%
     );
     border-radius: 0 0 40px 40px;
@@ -276,15 +277,17 @@ html, body {
 }
 
 .title-row {
-    display: block;
-    font-size: 1.55rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4rem;
     color: var(--text-white);
     white-space: nowrap;
 }
 
 .title-row--gold {
     display: block;
-    font-size: 2.4rem;
+    font-size: 2.1rem;
     margin-top: 2px;
     background: linear-gradient(180deg, #f5d67b 0%, var(--gold) 45%, #b8892e 100%);
     -webkit-background-clip: text;
@@ -307,6 +310,11 @@ html, body {
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9);
     margin: 0;
 }
+
+/* Brand color highlights */
+.brand-gpt { color: #5eead4; font-weight: 600; }
+.brand-claude { color: #fb923c; font-weight: 600; }
+.brand-gemini { color: #fde047; font-weight: 600; }
 
 .hero__desc-line--accent {
     color: var(--gold);
