@@ -72,18 +72,30 @@ function initSectionObserver() {
         lastScrollY = window.scrollY;
     }, { passive: true });
 
+    // Hero Observer: Threshold 0 (only pause and reset when completely out of view)
+    const heroObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const video = document.getElementById('heroVideo');
+            if (!video || document.getElementById('splash')) return;
+
+            if (entry.isIntersecting) {
+                // Comes back into view -> play
+                video.play().catch(() => {});
+            } else {
+                // Completely hidden -> park at 6s
+                video.pause();
+                // We wrap this in a small timeout to ensure the pause took effect
+                // before seeking, avoiding any visual jumps.
+                setTimeout(() => { video.currentTime = 6; }, 50);
+            }
+        });
+    }, { threshold: 0 });
+
+    if (hero) heroObserver.observe(hero);
+
+    // Section 2 Observer: Threshold 0.25 (triggers when 25% visible)
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            // Handle Hero Section video restart from 6th second
-            if (entry.target.id === 'hero') {
-                const video = document.getElementById('heroVideo');
-                if (entry.isIntersecting && video && !document.getElementById('splash')) {
-                    // Only trigger if splash screen is gone
-                    video.currentTime = 6;
-                    video.play().catch(() => {});
-                }
-            }
-            
             // Handle Section 2 reveals and video pauses
             if (entry.target.id === 'section-2') {
                 const s2Grid = document.getElementById('s2-grid');
@@ -119,7 +131,6 @@ function initSectionObserver() {
         });
     }, { threshold: 0.25 });
 
-    if (hero) observer.observe(hero);
     if (section2) observer.observe(section2);
 }
 
@@ -376,6 +387,19 @@ function initCheckoutFlow() {
                     btn.classList.remove('is-syncing');
                     document.body.classList.remove('go-to-checkout');
                     
+                    // EXPLICIT reset: Stop videos on Section 2 so they are ready when we return
+                    const cards = document.querySelectorAll('.s2-card');
+                    cards.forEach(c => {
+                        const otherVideo = c.querySelector('.s2-card__video');
+                        if (otherVideo) {
+                            otherVideo.pause();
+                            otherVideo.currentTime = 0;
+                        }
+                        c.classList.remove('is-playing');
+                        c.classList.remove('is-active');
+                    });
+                    document.querySelectorAll('.s2-info').forEach(i => i.classList.remove('is-active'));
+
                     const section3 = document.getElementById('section-3');
                     if (section3) {
                         if (currentStep !== 2) {
