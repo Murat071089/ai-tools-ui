@@ -72,26 +72,32 @@ function initSectionObserver() {
         lastScrollY = window.scrollY;
     }, { passive: true });
 
-    // Hero Observer: Threshold 0 (only pause and reset when completely out of view)
+    // Hero Observer: Threshold 0.2 ensures it triggers even if mobile viewports leave a tiny sliver visible
     const heroObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             const video = document.getElementById('heroVideo');
             if (!video || document.getElementById('splash')) return;
 
-            if (entry.isIntersecting) {
-                // Prevent iOS from flashing the poster image when reclaiming memory
+            // If more than 15% is visible, consider it on-screen
+            if (entry.intersectionRatio > 0.15) {
                 video.removeAttribute('poster');
                 
-                // Explicitly set to 6s just in case browser dropped the parked state
-                video.currentTime = 6;
-                video.play().catch(() => {});
+                // If it was parked while off-screen, start it from 6s
+                if (video.dataset.parked === "true") {
+                    video.dataset.parked = "false";
+                    video.currentTime = 6;
+                    video.play().catch(() => {});
+                } else if (video.paused) {
+                    video.play().catch(() => {});
+                }
             } else {
-                // Completely hidden -> park at 6s immediately
+                // When 85% is off-screen, safely park it at 6s
+                video.dataset.parked = "true";
                 video.pause();
                 video.currentTime = 6;
             }
         });
-    }, { threshold: 0 });
+    }, { threshold: [0, 0.2] });
 
     if (hero) heroObserver.observe(hero);
 
