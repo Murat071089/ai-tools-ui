@@ -9,19 +9,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initSplash() {
     const splash = document.getElementById('splash');
-    const enterBtn = document.getElementById('splash-enter');
     if (!splash) return;
 
-    // Click anywhere on splash (or specifically the enter button) to dismiss
+    // Click anywhere on splash to enter fullscreen + dismiss splash
     splash.addEventListener('click', () => {
         splash.classList.add('is-hidden');
-        // Start hero video after splash fades
+
+        // Request fullscreen
+        const el = document.documentElement;
+        const requestFS = el.requestFullscreen
+            || el.webkitRequestFullscreen
+            || el.mozRequestFullScreen
+            || el.msRequestFullscreen;
+        if (requestFS) requestFS.call(el).catch(() => {});
+
+        // Start hero video
         const video = document.getElementById('heroVideo');
         if (video) {
-            video.play().catch(() => {});
-            video.style.opacity = '1';
+            video.currentTime = 0;
+            video.play().then(() => {
+                video.classList.add('is-playing');
+            }).catch(() => {
+                video.classList.add('is-playing');
+            });
         }
     });
+
+    // When user exits fullscreen — snap back to hero so nothing is cut off
+    const onFSChange = () => {
+        const isFS = document.fullscreenElement
+            || document.webkitFullscreenElement
+            || document.mozFullScreenElement
+            || document.msFullscreenElement;
+
+        if (!isFS) {
+            // Exited fullscreen — scroll to top of hero
+            const hero = document.getElementById('hero');
+            if (hero) {
+                hero.scrollIntoView({ behavior: 'instant' });
+            }
+            // Also force recalc by touching scrollTop
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+    };
+
+    document.addEventListener('fullscreenchange', onFSChange);
+    document.addEventListener('webkitfullscreenchange', onFSChange);
+    document.addEventListener('mozfullscreenchange', onFSChange);
+    document.addEventListener('MSFullscreenChange', onFSChange);
 }
 
 let currentStep = 0;
@@ -131,38 +166,6 @@ function initSectionObserver() {
     observer.observe(section2);
 }
 
-/* === Splash → Fullscreen on tap === */
-function initSplash() {
-    const splash = document.getElementById('splash');
-    if (!splash) return;
-
-    splash.addEventListener('click', () => {
-        const el = document.documentElement;
-        const requestFS = el.requestFullscreen
-            || el.webkitRequestFullscreen
-            || el.mozRequestFullScreen
-            || el.msRequestFullscreen;
-        if (requestFS) requestFS.call(el).catch(() => {});
-
-        // Start video from beginning
-        const video = document.getElementById('heroVideo');
-        if (video) {
-            video.currentTime = 0;
-            video.play().then(() => {
-                video.classList.add('is-playing');
-            }).catch(() => {
-                video.classList.add('is-playing');
-            });
-        }
-
-        splash.classList.add('is-hidden');
-        setTimeout(() => {
-            const hero = document.getElementById('hero');
-            if (hero) hero.style.height = window.innerHeight + 'px';
-        }, 400);
-        setTimeout(() => splash.remove(), 700);
-    });
-}
 
 /* === Mobile fullscreen — hide browser toolbar === */
 function initMobileFullscreen() {

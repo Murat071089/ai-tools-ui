@@ -56,11 +56,15 @@
     animation: cinema-flash 1.8s ease 0.3s forwards;
 }
 
-/* Word 2: "интеллекта" — fade in at 2s, fade out at 3.5s */
+/* Word 2: "искусственного интеллекта" — fade in at 2s, fade out at 3.5s */
 .splash__word--2 {
-    font-size: 2.2rem;
-    color: rgba(255, 255, 255, 0.9);
-    letter-spacing: 0.04em;
+    font-size: 1.8rem;
+    background: linear-gradient(180deg, #ffb347 0%, #fb923c 45%, #e67e22 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 2px 12px rgba(251, 146, 60, 0.35));
+    letter-spacing: 0.02em;
     animation: cinema-flash 1.8s ease 2s forwards;
 }
 
