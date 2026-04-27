@@ -749,10 +749,10 @@ html, body {
    ═══════════════════════════ */
 @media (max-height: 640px) {
     .hero-content { padding: 28px 22px 18px; }
-    .title-row { font-size: 1.5rem; gap: 8px; }
-    .title-row--gold { font-size: 1.9rem; }
-    .hero__subtitle { font-size: 0.82rem; }
-    .robot-badge { width: 36px; height: 36px; }
+    .title-row { font-size: 1.1rem; }
+    .title-row--gold { font-size: 1.5rem; }
+    .hero__desc-line { font-size: 0.78rem; }
+    .robot-badge { width: 34px; height: 34px; }
     .chat-bubble { top: 195px; padding: 10px 18px; }
     .chat-bubble__value { font-size: 1.3rem; }
     .cta-btn { padding: 8px 12px; }
@@ -762,25 +762,28 @@ html, body {
 
 @media (min-height: 750px) {
     .hero-content { padding-top: 42px; }
-    .title-row { font-size: 1.85rem; }
-    .title-row--gold { font-size: 2.4rem; }
+    .title-row { font-size: 1.35rem; }
+    .title-row--gold { font-size: 2rem; }
+    .hero__desc-line { font-size: 0.88rem; }
+    .robot-badge--hero { width: 44px; height: 44px; }
     .chat-bubble { top: 260px; }
 }
 
 @media (min-height: 850px) {
     .hero-content { padding-top: 48px; }
-    .title-row { font-size: 2rem; }
-    .title-row--gold { font-size: 2.6rem; }
-    .robot-badge { width: 48px; height: 48px; }
+    .title-row { font-size: 1.45rem; }
+    .title-row--gold { font-size: 2.1rem; }
+    .hero__desc-line { font-size: 0.9rem; }
+    .robot-badge--hero { width: 46px; height: 46px; }
     .chat-bubble { top: 280px; }
 }
 
 @media (min-width: 768px) {
     .hero-content { padding: 60px 48px 48px; }
-    .title-row { font-size: 2.6rem; }
-    .title-row--gold { font-size: 3.2rem; }
-    .hero__subtitle { font-size: 1.05rem; }
-    .robot-badge { width: 52px; height: 52px; }
+    .title-row { font-size: 1.8rem; }
+    .title-row--gold { font-size: 2.4rem; }
+    .hero__desc-line { font-size: 1rem; }
+    .robot-badge--hero { width: 52px; height: 52px; }
     .chat-bubble { right: 60px; top: 320px; padding: 16px 28px; }
     .chat-bubble__value { font-size: 1.9rem; }
     .cta-btn { max-width: 440px; margin: 0 auto; padding: 12px 18px; }
