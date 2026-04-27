@@ -328,6 +328,17 @@ function initCards() {
     const infos = document.querySelectorAll('.s2-info');
     if (!cards.length) return;
 
+    // iOS WebKit Bug Fix: Force render first frame without poster
+    cards.forEach(card => {
+        const video = card.querySelector('.s2-card__video');
+        if (video) {
+            // Force seek to 0.1s to paint the frame
+            const paintFrame = () => { if (video.currentTime === 0) video.currentTime = 0.1; };
+            video.addEventListener('loadedmetadata', paintFrame);
+            if (video.readyState >= 1) paintFrame();
+        }
+    });
+
     cards.forEach(card => {
         card.addEventListener('click', () => {
             const row = card.getAttribute('data-row');
