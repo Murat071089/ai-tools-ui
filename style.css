@@ -216,8 +216,6 @@ html, body {
     height: 100dvh;
     scroll-snap-align: start;
     scroll-snap-stop: always;
-    height: -webkit-fill-available;
-    min-height: 100svh;
     overflow: hidden;
     background: var(--bg);
 }
