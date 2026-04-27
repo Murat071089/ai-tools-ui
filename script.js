@@ -7,7 +7,22 @@ document.addEventListener('DOMContentLoaded', () => {
     initSectionObserver();
 });
 
+function initSplash() {
+    const splash = document.getElementById('splash');
+    const enterBtn = document.getElementById('splash-enter');
+    if (!splash) return;
 
+    // Click anywhere on splash (or specifically the enter button) to dismiss
+    splash.addEventListener('click', () => {
+        splash.classList.add('is-hidden');
+        // Start hero video after splash fades
+        const video = document.getElementById('heroVideo');
+        if (video) {
+            video.play().catch(() => {});
+            video.style.opacity = '1';
+        }
+    });
+}
 
 let currentStep = 0;
 
@@ -64,82 +79,43 @@ function triggerCinematicLoading() {
 let lastScrollY = 0;
 
 function initSectionObserver() {
-    const hero = document.getElementById('hero');
     const section2 = document.getElementById('section-2');
+    if (!section2) return;
 
     // Track scroll direction
     window.addEventListener('scroll', () => {
         lastScrollY = window.scrollY;
     }, { passive: true });
 
-    // Hero Observer: Threshold 0.2 ensures it triggers even if mobile viewports leave a tiny sliver visible
-    const heroObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const video = document.getElementById('heroVideo');
-            if (!video || document.getElementById('splash')) return;
-
-            // If more than 15% is visible, consider it on-screen
-            if (entry.intersectionRatio > 0.15) {
-                video.removeAttribute('poster');
-                
-                // If it was parked while off-screen, start it from 6s
-                if (video.dataset.parked === "true") {
-                    video.dataset.parked = "false";
-                    video.currentTime = 6;
-                    video.play().catch(() => {});
-                } else if (video.paused) {
-                    video.play().catch(() => {});
-                }
-            } else {
-                // When 85% is off-screen, safely park it at 6s
-                video.dataset.parked = "true";
-                video.pause();
-                video.currentTime = 6;
-            }
-        });
-    }, { threshold: [0, 0.2] });
-
-    if (hero) heroObserver.observe(hero);
-
-    // Section 2 Observer: Threshold 0.25 (triggers when 25% visible)
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            // Handle Section 2 reveals and video pauses
-            if (entry.target.id === 'section-2') {
+            const s2Grid = document.getElementById('s2-grid');
+            
+            if (entry.isIntersecting) {
+                // Detect if user came from above or below
+                const rect = entry.boundingClientRect;
+                const fromBelow = rect.top > 0; // section is below viewport → user scrolled down
+                
+                if (s2Grid) {
+                    s2Grid.classList.toggle('from-below', fromBelow);
+                }
+                
+                // Section came into view — trigger loading/reveal
+                triggerCinematicLoading();
+            } else {
+                // Section left the viewport — reset so it re-animates on return
+                const loader = document.getElementById('s2-loader');
                 const s2Grid = document.getElementById('s2-grid');
                 
-                if (entry.isIntersecting) {
-                    const rect = entry.boundingClientRect;
-                    const fromBelow = rect.top > 0;
-                    if (s2Grid) {
-                        s2Grid.classList.toggle('from-below', fromBelow);
-                    }
-                    triggerCinematicLoading();
-                } else {
-                    // Reset cinematic animation state
-                    const loader = document.getElementById('s2-loader');
-                    if (loader && loader.dataset.loading !== "true") {
-                        if (s2Grid) s2Grid.classList.remove('content-ready');
-                    }
-                    
-                    // Stop & reset all second page videos automatically when leaving screen
-                    const cards = document.querySelectorAll('.s2-card');
-                    cards.forEach(c => {
-                        const otherVideo = c.querySelector('.s2-card__video');
-                        if (otherVideo) {
-                            otherVideo.pause();
-                            otherVideo.currentTime = 0;
-                        }
-                        c.classList.remove('is-playing');
-                        c.classList.remove('is-active');
-                    });
-                    document.querySelectorAll('.s2-info').forEach(i => i.classList.remove('is-active'));
+                // Only reset if we're not currently loading
+                if (loader && loader.dataset.loading !== "true") {
+                    if (s2Grid) s2Grid.classList.remove('content-ready');
                 }
             }
         });
     }, { threshold: 0.25 });
 
-    if (section2) observer.observe(section2);
+    observer.observe(section2);
 }
 
 /* === Splash → Fullscreen on tap === */
@@ -155,10 +131,10 @@ function initSplash() {
             || el.msRequestFullscreen;
         if (requestFS) requestFS.call(el).catch(() => {});
 
-        // Start video from 6th second!
+        // Start video from beginning
         const video = document.getElementById('heroVideo');
         if (video) {
-            video.currentTime = 6;
+            video.currentTime = 0;
             video.play().then(() => {
                 video.classList.add('is-playing');
             }).catch(() => {
@@ -395,19 +371,6 @@ function initCheckoutFlow() {
                     btn.classList.remove('is-syncing');
                     document.body.classList.remove('go-to-checkout');
                     
-                    // EXPLICIT reset: Stop videos on Section 2 so they are ready when we return
-                    const cards = document.querySelectorAll('.s2-card');
-                    cards.forEach(c => {
-                        const otherVideo = c.querySelector('.s2-card__video');
-                        if (otherVideo) {
-                            otherVideo.pause();
-                            otherVideo.currentTime = 0;
-                        }
-                        c.classList.remove('is-playing');
-                        c.classList.remove('is-active');
-                    });
-                    document.querySelectorAll('.s2-info').forEach(i => i.classList.remove('is-active'));
-
                     const section3 = document.getElementById('section-3');
                     if (section3) {
                         if (currentStep !== 2) {
